@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.vscode/
+
+# large course-submission duplicates kept locally only (Slides.pdf and README.md carry the same content)
+Autocall Project Final-Submission.pptx
+README.docx
+
+# figures that main.ipynb regenerates at the root on every run (curated copies live in figures/)
+/athena_paths_truncated_legend_below.png
+/iv_residual_heatmap.png
+/iv_residual_surface_3d.png
+
+# scratch
+*.log
+*.tmp

@@ -1,0 +1,41 @@
+section,item,value
+data,snapshot,"2026-09-30 15:22:50.029000 EDT, spot 7696.50"
+data,quotes,"1360 on 8 expiries (v1 rule, no filter)"
+data,discount curve,"FRED Treasury constant-maturity yield (proxy for SOFR OIS), as of 2026-09-28"
+data,implied dividends,"0.34% to 0.61%, all positive"
+calibration (v1),parameters,"kappa 1.7026, theta 0.0543, sigma 1.0212, rho -0.6230, v0 0.0252"
+calibration (v1),Feller 2kt vs s2,0.185 vs 1.043
+calibration (v1),"price RMSE (pts, % of spot)","20.81, 0.270%"
+calibration (v1),vol RMSE all / 1M-3M / 6M+,1.66 / 2.24 / 0.99 vol pts
+calibration (v1),product strikes mean |vol err|,0.42 vol pts
+price (v1),fair value,975.84 = 97.58% (s.e. 0.71)
+price (v1),legs,"principal 930.55, coupons 70.94, put -25.66"
+price (v1),autocall by date,[0.7102 0.0744 0.0378 0.0227 0.0167 0.013 ]
+price (v1),"P(loss), mean level | loss, expected loss","5.0%, 37.1%, 3.13%"
+price (v1),expected life,1.55 y
+price (v1),fair coupon at par / 98.75%,4.022% / 3.493%
+validation,"martingale, vanillas, limit case",within ~1.5 s.e.; largest vanilla gap 1.56 s.e.; limit MC 988.12 vs closed 988.44 vs PDE 988.57
+validation,step / path convergence,"[973.1, 976.6, 975.8] at 12/52/252 steps; [977.3, 975.8, 977.1, 976.8] at 25k-200k paths"
+PDE,price and legs,977.46 = 931.13 + 70.83 -24.51; vs MC +1.62 (+2.3 s.e.)
+Greeks (PDE),"delta hedge %, cash gamma, vega/vol pt, d/dsigma, d/drho","15.4%, -11.4, -0.90, 1.38, -0.06"
+rates,DV01 discounting / full +10bp / theta per week,-0.142 / -0.90 / +1.49
+attribution,v1 -> v2 steps,"v1: Euler, flat drift, no lag (v1 engine above): 975.84; v2 engine, Euler, flat drift, no lag: 975.84; + QE scheme: 976.32; + term-structure drift from the curves: 976.00; + 7-day payment lag: 975.08; + vol objective, 6M+ fit, unfiltered quotes: 973.84; + quote filter: the main.ipynb pipeline: 975.43"
+objectives,vol RMSE all (price / vol-spread objective),1.66 / 1.06
+optimisers,v1 DE+LBFGS vs least_squares,20.8104 in 19 s vs 20.8104 in 0.3 s
+models,v1 Heston (price objective),vol RMSE 1.66 / 2.24 / 0.99; price RMSE 20.8; product strikes 0.42
+models,Heston (vol objective),vol RMSE 1.06 / 1.24 / 0.90; price RMSE 23.0; product strikes 0.47
+models,Bates,vol RMSE 0.60 / 0.49 / 0.68; price RMSE 20.5; product strikes 0.59
+models,Double Heston,vol RMSE 0.51 / 0.26 / 0.64; price RMSE 19.9; product strikes 0.56
+models,Rough Heston,vol RMSE 0.95 / 1.03 / 0.87; price RMSE 21.8; product strikes 0.47
+note by model,v1 Heston (price objective),976.32 (P(KI) 4.9%)
+note by model,Heston (vol objective),978.50 (P(KI) 4.6%)
+note by model,Bates,980.19 (P(KI) 4.3%)
+note by model,Double Heston,979.41 (P(KI) 4.3%)
+Feller,constrained fit,"sigma 0.33, vol RMSE 5.01, price RMSE 26.1, note 974.22"
+engines,"Lewis FFT [v1] / Carr-Madan 1.5 / COS, max vol err",0.034 / 0.026 / 0.000 vol pts
+expiry rule,"nearest vs liquid, product strikes",0.421 vs 0.418
+Monte Carlo,relative efficiency,"Euler full truncation [v1]: 2.15; QE: 1.00; QE + 4 control variates: 2.08; QE antithetic: 0.85; QE antithetic + control variates: 1.60; QE Sobol + Brownian bridge (8 scrambles): 2.41; QE Sobol, no bridge (8 scrambles): 1.72; QE pseudo-random, 8 batches: 0.84"
+surfaces,SSVI / SVI fit RMSE,1.28 / 0.48 vol pts
+dynamics,Local vol (Dupire on SVI),"962.19 (P(KI) 6.3%, vanilla RMS 0.37)"
+dynamics,"Heston, v1 parameters","975.84 (P(KI) 5.0%, vanilla RMS 3.50)"
+dynamics,LSV (Heston v1 + leverage),"971.56 (P(KI) 5.4%, vanilla RMS 0.55)"

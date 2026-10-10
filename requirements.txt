@@ -1,0 +1,11 @@
+# Tested with Python 3.13 (Anaconda). Older 3.10+ should work.
+numpy>=2.0
+scipy>=1.14
+pandas>=2.2
+matplotlib>=3.9
+numba>=0.60
+openpyxl>=3.1
+jupyter
+nbconvert>=7.0
+# only for pull_live_data.py (live SPX chain and FRED rates)
+yfinance>=0.2.50
